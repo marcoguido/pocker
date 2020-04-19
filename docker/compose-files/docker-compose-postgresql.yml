@@ -1,0 +1,19 @@
+version: '3.4'
+
+services:
+  postgresql:
+    container_name: "${COMPOSE_PROJECT_NAME}.postgresql"
+    env_file: ../.env
+    environment:
+      - POSTGRES_USER=${DBMS_USER}
+      - POSTGRES_PASSWORD=${DBMS_ROOT_PASSWORD}
+    image: postgresql:${POSTGRESQL_VERSION}
+    networks:
+      project:
+      database:
+        aliases:
+          - postgresql
+    ports:
+      - "${POSTGRESQL_PORT}:5432"
+    volumes:
+      - ../database/postgresql/data:/var/lib/postgresql/data/:rw

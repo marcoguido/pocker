@@ -1,0 +1,123 @@
+#################
+# Example VHost #
+#################
+
+# Optional alias directive.
+# Its structure comprehends a fake server to which the traffic
+# is redirected by a proxy_pass in the main server object when
+# hitting a specific endpoint.
+
+# If you need to enable SSL for this endpoint, uncomment the
+# second server directive.
+
+# Base virtualhost
+server {
+    listen 80;
+    server_name PROJECT.test;
+    root /var/www/html/PROJECT;
+
+    index index.php index.html;
+    access_log /var/www/logs/nginx/PROJECT_access.log;
+    error_log  /var/www/logs/nginx/PROJECT_error.log;
+
+    # serve static files directly
+    location ~* \.(jpg|jpeg|gif|css|png|js|ico|html)$ {
+		access_log off;
+		expires max;
+		log_not_found off;
+	}
+
+    # unless the request is for a valid file (image, js, css, etc.), send to bootstrap
+	if (!-e $request_filename)
+	{
+		rewrite ^/(.*)$ /index.php?/$1 last;
+		break;
+	}
+
+    #location /ALIASED/PATH {
+    #        proxy_pass http://alias1.bogus/;
+    #}
+
+	location / {
+		try_files $uri $uri/ /index.php?$query_string;
+	}
+
+    location ~* \.php$ {
+        try_files $uri = 404;
+        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+        fastcgi_pass workspace:9000;
+        fastcgi_index index.php;
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+    }
+
+    location ~ /\.ht {
+		deny all;
+	}
+}
+
+# SSL-enabled virtualhost
+#server {
+#    listen 443 ssl;
+#    server_name PROJECT.test;
+#    root /var/www/html/PATH/TO/PROJECT;
+#
+#    index index.php index.html;
+#    access_log /var/www/logs/nginx/ssl_PROJECT_access.log;
+#    error_log  /var/www/logs/nginx/ssl_PROJECT_error.log;
+#
+#    ssl_certificate /etc/ssl/certificates/server.crt;
+#    ssl_certificate_key /etc/ssl/certificates/server.key;
+#    ssl_protocols TLSv1.2 TLSv1.1 TLSv1;
+#    ssl_ciphers HIGH:!aNULL:!eNULL:!EXPORT:!CAMELLIA:!DES:!MD5:!PSK:!RC4;
+#    ssl_prefer_server_ciphers on;
+#
+#    # serve static files directly
+#    location ~* \.(jpg|jpeg|gif|css|png|js|ico|html)$ {
+#		access_log off;
+#		expires max;
+#		log_not_found off;
+#	}
+#
+#    # unless the request is for a valid file (image, js, css, etc.), send to bootstrap
+#	if (!-e $request_filename)
+#	{
+#		rewrite ^/(.*)$ /index.php?/$1 last;
+#		break;
+#	}
+#
+#    #location /ALIASED/PATH {
+#    #        proxy_pass http://alias1.bogus/;
+#    #}
+#
+#	location / {
+#		try_files $uri $uri/ /index.php?$query_string;
+#	}
+#
+#    location ~* \.php$ {
+#        try_files $uri = 404;
+#        fastcgi_split_path_info ^(.+\.php)(/.+)$;
+#        fastcgi_pass workspace:9000;
+#        fastcgi_index index.php;
+#        include fastcgi_params;
+#        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+#    }
+#
+#    location ~ /\.ht {
+#		deny all;
+#	}
+#}
+
+# Alias directive section
+#upstream alias1.bogus {
+#    server host.docker.internal;
+#}
+
+#server {
+#    server_name alias1.bogus;
+#    root /PATH/TO/DOCUMENTROOT/OF/ALIASED/COMPONENT/;
+#
+#    location / {
+#        try_files $uri $uri/ /$is_args$args;
+#    }
+#}

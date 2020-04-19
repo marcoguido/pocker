@@ -1,0 +1,68 @@
+version: '3.4'
+
+services:
+  php:
+    build:
+      args:
+        # General PHP vars
+        - PHP_VERSION=${PHP_VERSION}
+        # PHP modules
+        - ENABLE_XDEBUG_SUPPORT=${ENABLE_XDEBUG_SUPPORT}
+        - XD_REMOTE_HOST=${XD_REMOTE_HOST}
+        - XD_REMOTE_PORT=${XD_REMOTE_PORT}
+        - XD_IDEKEY=${XD_IDEKEY}
+        - ENABLE_MCRYPT_SUPPORT=${ENABLE_MCRYPT_SUPPORT}
+        - ENABLE_MYSQL_SUPPORT=${ENABLE_MYSQL_SUPPORT}
+        - ENABLE_POSTGRESQL_SUPPORT=${ENABLE_POSTGRESQL_SUPPORT}
+        - ENABLE_IMAGIC_SUPPORT=${ENABLE_IMAGIC_SUPPORT}
+        - ENABLE_PHPREDIS_SUPPORT=${ENABLE_PHPREDIS_SUPPORT}
+        - ENABLE_INTL_SUPPORT=${ENABLE_INTL_SUPPORT}
+        # Development tools
+        - PREFERRED_NODE_VERSION=${PREFERRED_NODE_VERSION}
+        - ENABLE_NODEJS_SUPPORT=${ENABLE_NODEJS_SUPPORT}
+        - ENABLE_LARAVEL_INSTALLER=${ENABLE_LARAVEL_INSTALLER}
+      context: ../workspace
+    container_name: "${COMPOSE_PROJECT_NAME}.workspace"
+    env_file: ../.env
+    environment:
+      - PHP_IDE_CONFIG=serverName=${COMPOSE_PROJECT_NAME}
+    image: ${COMPOSE_PROJECT_NAME}.workspace:php-${PHP_VERSION}
+    networks:
+      project:
+      database:
+    volumes:
+      - docker-sync:/var/www/html:nocopy
+
+  redis:
+    container_name: "${COMPOSE_PROJECT_NAME}.redis"
+    image: redis:alpine
+    networks:
+      project:
+    ports:
+      - "${REDIS_PORT}:6379"
+
+  minio:
+    build:
+      context: ../storage/minio
+    container_name: "${COMPOSE_PROJECT_NAME}.minio"
+    env_file: ../.env
+    environment:
+      - MINIO_ACCESS_KEY=${MINIO_ACCESS_KEY}
+      - MINIO_SECRET_KEY=${MINIO_SECRET_KEY}
+    image: ${COMPOSE_PROJECT_NAME}.minio
+    networks:
+      - project
+    ports:
+      - "${MINIO_PORT}:9000"
+    volumes:
+      - ../storage/minio/data:/export:rw
+      - ../storage/minio/config:/root/.minio:rw
+
+networks:
+  project:
+  database:
+
+volumes:
+  docker-sync:
+    external:
+      name: '${COMPOSE_PROJECT_NAME}-sync'

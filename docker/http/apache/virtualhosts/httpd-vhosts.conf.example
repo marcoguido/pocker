@@ -1,0 +1,33 @@
+#################
+# Example VHost #
+#################
+
+# The Alias directive can be useful to map a BE to the
+# same domain of the FE in order to avoid CORS issues
+
+<VirtualHost *:80>
+    # Proxy .php requests to port 9000 of the php-fpm container
+    ProxyPassMatch ^/(.*\.php(/.*)?)$ fcgi://php:9000/var/www/html/$1
+
+    DocumentRoot "/var/www/html"
+    ErrorLog "/var/www/logs/apache/example_test_log"
+    ServerName example.test
+    # Alias /api "/var/www/html/PATH/TO/ALIASED/DIR"
+</VirtualHost>
+
+# Uncomment the following lines in order to
+# enable a ssl virtualhost.
+# MAKE SURE to place the right `.crt` and `.key`
+# files in `workspace/ssl-certificates` folder
+#<VirtualHost *:443>
+#    # Proxy .php requests to port 9000 of the php-fpm container
+#    ProxyPassMatch ^/(.*\.php(/.*)?)$ fcgi://php:9000/var/www/html/$1
+#
+#    DocumentRoot "/var/www/html"
+#    ErrorLog "/var/www/logs/apache/ssl_example_test_log"
+#    ServerName example.test
+#    # Alias /api "/var/www/html/PATH/TO/ALIASED/DIR"
+#    SSLEngine on
+#    SSLCertificateFile "/usr/local/apache2/conf/certificates/server.crt"
+#    SSLCertificateKeyFile "/usr/local/apache2/conf/certificates/server.key"
+#</VirtualHost>

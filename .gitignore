@@ -1,0 +1,4 @@
+.idea/
+.vs_code/
+.docker-sync/
+.env
