@@ -1,14 +1,19 @@
 # Configuration setup
 In order to successfully run and access your project, you have to follow some simple configuration steps.
 
-1. Whether in the `src` folder you are dropping a single site or a bunch, append each one of their domain names to your system *hosts* file (which can be found at `/etc/host` if your computer is running Linux or MacOS, at `C:\Windows\System32\drivers\etc\hosts` if running Windows), binding them to your _home IP address_ (`127.0.0.1` should be fine), as shown below.
+1. Whether in the `src` folder you are dropping a single site or a bunch, append each one of their domain names to your 
+system *hosts* file (which can be found at `/etc/host` if your computer is running Linux or MacOS, at 
+`C:\Windows\System32\drivers\etc\hosts` if running Windows), binding them to your _home IP address_ (`127.0.0.1` should 
+be fine), as shown below.
 
     In the following example configuration `example.test` will be the domain name which will be used to access the project.
     ```bash
     127.0.0.1	example.test
     ```
 
-2. Inside the `docker` folder there is a `.env.example` file defining the main aspects of the environment you will run your project(s) in. Rename that file to `.env` and update every variable according to your needs. The various options will now be listed below.
+2. Inside the `docker` folder there is a `.env.example` file defining the main aspects of the environment you will run 
+your project(s) in. Rename that file to `.env` and update every variable according to your needs. The various options 
+will now be listed below.
 
     ```dotenv
     #################
@@ -133,14 +138,25 @@ In order to successfully run and access your project, you have to follow some si
     REDIS_PORT=63790
     ```
 
-3. Depending on the web server you want to use, replicate the default _virtualhost_ file either for `nginx` or `apache`, respectively inside `docker/http/apache/virtualhosts` or `docker/http/nginx/virtualhosts` folder and update each copy according to your needs.
+3. Depending on the web server you want to use, replicate the default _virtualhost_ file either for `nginx` or `apache`,
+ respectively inside `docker/http/apache/virtualhosts` or `docker/http/nginx/virtualhosts` folder and update each copy 
+ according to your needs.
 
-4. Open a terminal window and head to the root folder of this repository. There, execute the command `make`: all the environment for your project will be crafted (note that this step is required after every update to the `.env` file of *step 2*)
+4. Open a terminal window and head to the root folder of this repository. There, execute the command `make`: all the 
+environment for your project will be crafted (note that this step is required after every update to the `.env` file of
+ *step 2*)
 
-5. Now that the environment is ready, we can start it. The first run could be slow, as `Docker Sync` utility has to synchronize you project source files into a virtual volume: don't worry, is a one-timer operation.
+5. Now that the environment is ready, we can start it. The first run could be slow, as `Docker Sync` utility has to 
+synchronize you project source files into a virtual volume: don't worry, is a one-timer operation.
     
-   To start the environment, run in the same terminal as before the command `make run`. If you want to see the logs of your containers, you can execute `make run VERBOSE=true` instead of the previous command.
+    To start the environment, run in the same terminal as before the command `make run`. If you want to see the logs of 
+    your containers, you can execute `make run VERBOSE=true` instead of the previous command.  
 
-6. To test that everything is working fine, open your favourite browser and try entering one of the domains you earlier registered in the *hosts* file at *step 1* of current tasks list.
+    If you want to opt-out from using `Docker-Sync`, append to the following commands the flag `NO_DOCKER_SYNC=true` 
 
-7. If everything succeeded, you should be able to access the `workspace` container console by running in a new terminal window (pointing to the root of this repository) `make tty`.
+6. To test that everything is working fine, open your favourite browser and try entering one of the domains you earlier 
+registered in the *hosts* file at *step 1* of current tasks list.
+
+7. If everything succeeded, you should be able to access the `workspace` container console by running in a new terminal 
+window (pointing to the root of this repository) `make tty`. If you decided not to go with `Docker-Sync` remember to add
+the `NO_DOCKER_SYNC=true` flag to the command.

@@ -1,4 +1,4 @@
-# Dockerizing
+# Pocker
 This repository contains a full development environment to be used to create/run a PHP (>= 7.0) project.
 
 Most of the aspects of the configuration can be tuned via a `.env` file to be created in the [setup](docs/setup.md) phase.
@@ -8,7 +8,7 @@ As of now, this scaffolding can be used with all features on any *nix OS; full W
 ## Contents
 This configuration comprehends:
 
-- Docker-sync support
+- Docker-sync support (optional)
 
 - 2 web servers (`apache` and `nginx`)
 
@@ -18,7 +18,8 @@ This configuration comprehends:
 
 - `minio` as storage layer (exposes a set of APIs compatible with Amazon S3)
 
-- A `workspace` container: this is an extended `php` image with everything required to build and run a project, with cronjob and supervisor support
+- A `workspace` container: this is an extended `php` image with everything required to build and run a project, with 
+cronjob and Supervisor support
 
 ## Table of contents
 
