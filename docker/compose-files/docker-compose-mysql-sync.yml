@@ -1,0 +1,23 @@
+version: '3.4'
+
+services:
+  mysql:
+    build:
+      args:
+        - MYSQL_VERSION=${MYSQL_VERSION}
+      context: ../database/mysql
+    container_name: "${COMPOSE_PROJECT_NAME}.mysql"
+    env_file: ../.env
+    environment:
+      - MYSQL_USER=${DBMS_USER}
+      - MYSQL_ROOT_PASSWORD=${DBMS_ROOT_PASSWORD}
+    image: ${COMPOSE_PROJECT_NAME}.mysql:${MYSQL_VERSION}
+    networks:
+      project:
+      database:
+        aliases:
+          - mysql
+    ports:
+      - "${MYSQL_PORT}:3306"
+    volumes:
+      - ../database/mysql/data:/var/lib/mysql/:rw

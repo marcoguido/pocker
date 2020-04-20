@@ -17,4 +17,4 @@ services:
     volumes:
       - ../http/nginx/virtualhosts:/etc/nginx/conf.d/
       - ../workspace/ssl-certificates:/etc/ssl/certificates
-      - ../../src:/var/www/html
+      - docker-sync:/var/www/html:nocopy

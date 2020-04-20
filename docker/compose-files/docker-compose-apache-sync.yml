@@ -18,4 +18,4 @@ services:
     volumes:
       - ../http/apache/virtualhosts:/usr/local/apache2/conf/virtualhosts
       - ../workspace/ssl-certificates:/usr/local/apache2/conf/certificates
-      - ../../src:/var/www/html
+      - docker-sync:/var/www/html:nocopy

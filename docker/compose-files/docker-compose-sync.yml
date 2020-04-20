@@ -31,7 +31,7 @@ services:
       project:
       database:
     volumes:
-      - ../../src:/var/www/html
+      - docker-sync:/var/www/html:nocopy
 
   redis:
     container_name: "${COMPOSE_PROJECT_NAME}.redis"
@@ -61,3 +61,8 @@ services:
 networks:
   project:
   database:
+
+volumes:
+  docker-sync:
+    external:
+      name: '${COMPOSE_PROJECT_NAME}-sync'

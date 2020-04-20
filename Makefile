@@ -2,25 +2,31 @@
 include docker/.env
 export $(shell sed 's/=.*//' docker/.env)
 
+# Defining whether to use Docker Sync or not
+ifndef NO_DOCKER_SYNC
+DOCKER_SYNC_FLAG = -sync
+endif
+
+# Defining whether to show or not Docker containers log on screen
+ifndef VERBOSE
+VERBOSE_FLAG = -d
+endif
+
 # Defining base compose file
-COMPOSE_FILE_PATH := -f docker/compose-files/docker-compose.yml
+COMPOSE_FILE_PATH := -f docker/compose-files/docker-compose$(DOCKER_SYNC_FLAG).yml
 
 # Picking the right web server for the project
 ifeq (,$(findstring $(WEBSERVER),nginx apache))
 $(error The WEBSERVER variable in the .env file is invalid. Accepted values are only apache or nginx, found $(WEBSERVER))
 else
-COMPOSE_FILE_PATH += -f docker/compose-files/docker-compose-$(WEBSERVER).yml
+COMPOSE_FILE_PATH += -f docker/compose-files/docker-compose-$(WEBSERVER)$(DOCKER_SYNC_FLAG).yml
 endif
 
 # Picking the right DBMS for the project
 ifeq (,$(findstring $(DBMS),postgresql mysql))
 $(error The DBMS variable in the .env file is invalid. accepted values are only postgresql and mysql, found $(DBMS))
 else
-COMPOSE_FILE_PATH += -f docker/compose-files/docker-compose-$(DBMS).yml
-endif
-
-ifndef VERBOSE
-VERBOSE_FLAG = -d
+COMPOSE_FILE_PATH += -f docker/compose-files/docker-compose-$(DBMS)$(DOCKER_SYNC_FLAG).yml
 endif
 
 build:
