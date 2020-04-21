@@ -217,6 +217,7 @@ RUN if [ $(ls -1 /etc/cron.d/*.job 2>/dev/null | wc -l) != 0 ]; then \
 ############################
 COPY conf/supervisord.conf /etc/supervisor/supervisord.conf
 COPY supervisor-programs/* /etc/supervisor/conf.d/
+RUN mkdir -p /var/www/logs/supervisor
 RUN if [ $(ls -1 /etc/supervisor/conf.d/*.conf 2>/dev/null | wc -l) != 0 ]; then \
     for SUPERVISOR_PROGRAM in /etc/supervisor/conf.d/*.conf ; \
     do \
