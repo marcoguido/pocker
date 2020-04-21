@@ -14,6 +14,7 @@ RUN mkdir -p /usr/share/man/{man1,man7} \
         bc \
         cron \
         supervisor \
+        git \
         iproute2 \
         libxml2-dev \
         libicu-dev \
