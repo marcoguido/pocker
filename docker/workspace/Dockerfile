@@ -186,8 +186,8 @@ RUN if [ ${ENABLE_NODEJS_SUPPORT} = true ]; then \
 # Handle SSL certificates and SSH keys #
 ########################################
 RUN usermod -u 1000 www-data \
-    && mkdir -p /root/.ssh/host-keys/* \
-    && mkdir -p /etc/ssl/certificates/*
+    && mkdir -p /root/.ssh/host-keys \
+    && mkdir -p /etc/ssl/certificates
 
 COPY ssl-certificates /etc/ssl/certificates/
 COPY ssh-keys /root/.ssh/host-keys/
