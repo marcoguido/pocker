@@ -194,10 +194,10 @@ COPY ssh-keys /root/.ssh/host-keys/
 
 RUN chmod 644 /etc/ssl/certificates/*
 RUN if [find "/root/.ssh/host-keys" -mindepth 1 -print -quit 2>/dev/null | grep -q .]; then \
-    chmod 600 /root/.ssh/host-keys/* \
-    && chmod 644 /root/.ssh/host-keys/*.pub \
+    chmod 600 /root/.ssh/host-keys/id_rsa \
+    && chmod 644 /root/.ssh/host-keys/id_rsa.pub \
     && eval `ssh-agent -s` \
-    && ssh-add /root/.ssh/host-keys/* \
+    && ssh-add /root/.ssh/host-keys/id_rsa \
 ;fi
 
 ######################
