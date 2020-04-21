@@ -15,6 +15,7 @@ server {
     listen 80;
     server_name PROJECT.test;
     root /var/www/html/PROJECT;
+    client_max_body_size 30M;
 
     index index.php index.html;
     access_log /var/www/logs/nginx/PROJECT_access.log;
@@ -61,6 +62,7 @@ server {
 #    listen 443 ssl;
 #    server_name PROJECT.test;
 #    root /var/www/html/PATH/TO/PROJECT;
+#    client_max_body_size 30M;
 #
 #    index index.php index.html;
 #    access_log /var/www/logs/nginx/ssl_PROJECT_access.log;
