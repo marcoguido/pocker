@@ -6,11 +6,13 @@
 
 - If you want to connect to one of the DBMS container you started from your **host** computer, as `host` value remember 
 to set your _HOME IP_ (`127.0.0.1`) and as port the one defined by either the `MYSQL_PORT` or `POSTGRESQL_PORT` defined 
-in the `.env` file.
+in the `.env` file.  
+The same considerations applies to the `Redis` service.
 
 - If you want to connect your project to a DBMS remember to use the standard ports for each system (i.e. `3306` for 
 **MySQL** and `5432` for **PostgreSQL**) and for the connection `host` use the name of the service (`mysql` or 
-`postgresql`).
+`postgresql`).  
+The same considerations applies to the `Redis` and `Minio` services.
 
 - If for some reason the synchronization made by `Docker Sync` does not perform correctly and seems unresponsive, simply
  kill every running container and reboot the Docker Desktop application (if on MacOS) or the Docker service (on Linux).

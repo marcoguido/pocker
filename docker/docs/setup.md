@@ -6,10 +6,14 @@ system *hosts* file (which can be found at `/etc/host` if your computer is runni
 `C:\Windows\System32\drivers\etc\hosts` if running Windows), binding them to your _home IP address_ (`127.0.0.1` should 
 be fine), as shown below.
 
-    In the following example configuration `example.test` will be the domain name which will be used to access the project.
+    In the following example configuration, `example.test` will be the domain name which will be used to access the project.
     ```bash
     127.0.0.1	example.test
-    ```
+    ```   
+   Add also a bonus entry in your `hosts` file in order to map the `Minio` storage, if you intend to use it:
+   ```bash
+    127.0.0.1  minio
+   ```
 
 2. Inside the `docker` folder there is a `.env.example` file defining the main aspects of the environment you will run 
 your project(s) in. Rename that file to `.env` and update every variable according to your needs. The various options 
