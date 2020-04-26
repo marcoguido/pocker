@@ -66,20 +66,14 @@ RUN if [ ${ENABLE_MCRYPT_SUPPORT} = true ] ; then \
     ;fi \
 ;fi
 
-######################
-# MYSQL INSTALLATION #
-######################
-ARG ENABLE_MYSQL_SUPPORT=false
-RUN if [ ${ENABLE_MYSQL_SUPPORT} = true ]; then \
+##################################
+# DBMS dependencies installation #
+##################################
+ARG DBMS=mysql
+RUN if [ ${DBMS} = mysql ]; then \
     docker-php-ext-install pdo_mysql \
     && docker-php-ext-install mysqli \
-;fi
-
-######################
-# PGSQL INSTALLATION #
-######################
-ARG ENABLE_POSTGRESQL_SUPPORT=false
-RUN if [ ${ENABLE_POSTGRESQL_SUPPORT} = true ]; then \
+else \
     apt-get install -y \
         postgresql-client \
         libpq-dev \
