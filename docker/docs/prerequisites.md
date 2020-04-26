@@ -48,12 +48,20 @@ developing from MacOS).
         You must take note of the first shown IP address (the one following the `inet` keyword)
 
 2. The second thing to do is to make sure [Ruby](https://www.ruby-lang.org/) is installed in your system, in order to 
-meet the next prerequisite.
+meet the next prerequisite.  
+    MacOs ships with Ruby preinstalled, on Linux you have to install it by yourself.  
+    If you are running a Debian based distribution (Ubuntu and its flavours are an example), simply run in a terminal:
+    ```bash
+    sudo apt install -y ruby ruby-dev
+    ```
 
-3. As third step, we have to install the [`Docker Sync`](http://docker-sync.io/) utility.
-
+3. As third step, we have to install the [`Docker Sync`](http://docker-sync.io/) utility.  
     If you ever tried to develop something with Docker on a non-Linux OS, you surely incurred in degradated performances,
     expecially on MacOS. This is due to the virtualization layer which is in the middle between the Docker runtime and 
     the operating system. To outcome this bottleneck, the `Docker Sync` utility comes to the rescue by taking care of 
     synchronizing our sources with a virtual disk (in both directions) which will be created to run our project: this 
-    results in a noticeable performance boost.
+    results in a noticeable performance boost.  
+    To install the Docker Sync utility, run the following command in a terminal:
+    ```bash
+    gem install docker-sync
+    ```
