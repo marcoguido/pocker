@@ -67,3 +67,9 @@ For example:
 the `docker` directory, in order for it to be left untouched and be consulted whenever needed.
 
 This approach creates a strong separation of concerns, which is good in order to keep everything as clean as possible.
+
+## Notes :warning_sign:
+At the moment, the repository has been tested on MacOS and all features are working.  
+Linux support is complete, but shouldn't need the Docker-Sync utility, as Docker on Linux is already blazing fast.  
+As of now Windows support is partial and could not work: we'll work on that in order to provide a service usable
+by every developer, disregard from which OS is in use.   
