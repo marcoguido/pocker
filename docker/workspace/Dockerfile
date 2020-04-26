@@ -41,9 +41,9 @@ RUN mkdir -p /usr/share/man/{man1,man7} \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd
 
-#######################
-# MCRYPT INSTALLATION #
-#######################
+###########################
+# PHP Mcrypt installation #
+###########################
 ARG ENABLE_MCRYPT_SUPPORT=false
 RUN if [ ${ENABLE_MCRYPT_SUPPORT} = true ] ; then \
     if [ $(bc -l<<<"${PHP_VERSION:0:3} >= 7.0") == $(bc -l<<<"${PHP_VERSION:0:3} < 7.2") ] ; then \
@@ -82,9 +82,9 @@ else \
     && docker-php-ext-install pdo_pgsql \
 ;fi
 
-#######################
-# XDEBUG INSTALLATION #
-#######################
+###########################
+# PHP xDebug installation #
+###########################
 ARG ENABLE_XDEBUG_SUPPORT=false
 ARG XD_REMOTE_HOST=host.docker.internal
 ARG XD_IDEKEY=PHPSTORM
@@ -104,9 +104,9 @@ RUN if [ ${ENABLE_XDEBUG_SUPPORT} = true ]; then \
     && docker-php-ext-enable xdebug \
 ;fi
 
-############################
-# IMAGEMAGICK INSTALLATION #
-############################
+################################
+# PHP ImageMagick installation #
+################################
 ARG ENABLE_IMAGIC_SUPPORT=false
 RUN if [ ${ENABLE_IMAGIC_SUPPORT} = true ]; then \
     apt-get install -y libmagickwand-dev --no-install-recommends \
@@ -115,7 +115,7 @@ RUN if [ ${ENABLE_IMAGIC_SUPPORT} = true ]; then \
 ;fi
 
 ##########################
-# PHP REDIS INSTALLATION #
+# PHP Redis installation #
 ##########################
 ARG ENABLE_PHPREDIS_SUPPORT=false
 RUN if [ ${ENABLE_PHPREDIS_SUPPORT} = true ]; then \
@@ -124,9 +124,9 @@ RUN if [ ${ENABLE_PHPREDIS_SUPPORT} = true ]; then \
     && docker-php-ext-enable redis \
 ;fi
 
-#####################
-# INTL INSTALLATION #
-#####################
+#########################
+# PHP INTL Installation #
+#########################
 ARG ENABLE_INTL_SUPPORT=false
 RUN if [ ${ENABLE_INTL_SUPPORT} = true ]; then \
     apt-get install -y libicu-dev \
@@ -134,9 +134,9 @@ RUN if [ ${ENABLE_INTL_SUPPORT} = true ]; then \
     && docker-php-ext-install intl \
 ;fi
 
-##############################
-# Cleanup installation cache #
-##############################
+##################################
+# Cleanup APT installation cache #
+##################################
 RUN rm -rf /var/lib/apt/lists/* \
     && apt-get clean
 
@@ -171,7 +171,6 @@ ARG ENABLE_NODEJS_SUPPORT=false
 RUN if [ ${ENABLE_NODEJS_SUPPORT} = true ]; then \
     curl -o - https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash \
     && source $HOME/.nvm/nvm.sh \
-    && nvm --version \
     && nvm install stable \
     && nvm install ${PREFERRED_NODE_VERSION} \
 ;fi
