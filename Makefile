@@ -155,10 +155,10 @@ stop:
 	@make -s stop-$(PLATFORM)
 
 fresh-Linux:
-	$(error Task not supported on $($PLATFORM))
+	$(error Task not supported on $(PLATFORM))
 
 fresh-Windows:
-	$(error Task not supported on $($PLATFORM))
+	$(error Task not supported on $(PLATFORM))
 
 fresh-Darwin:
 	@make -s stop
@@ -167,4 +167,3 @@ fresh-Darwin:
 fresh:
 	$(info Purging Docker volumes..)
 	@make -s fresh-$(PLATFORM)
-	$(info All cleaned!)
