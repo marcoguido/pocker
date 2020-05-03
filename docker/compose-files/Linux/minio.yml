@@ -1,0 +1,19 @@
+version: '3.4'
+
+services:
+  minio:
+    build:
+      context: ../storage/minio
+    container_name: "${COMPOSE_PROJECT_NAME}.minio"
+    env_file: ../.env
+    environment:
+      - MINIO_ACCESS_KEY=${MINIO_ACCESS_KEY}
+      - MINIO_SECRET_KEY=${MINIO_SECRET_KEY}
+    image: ${COMPOSE_PROJECT_NAME}.minio
+    networks:
+      - project
+    ports:
+      - "${MINIO_PORT}:9000"
+    volumes:
+      - ../storage/minio/data:/export:rw
+      - ../storage/minio/config:/root/.minio:rw
