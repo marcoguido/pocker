@@ -66,7 +66,10 @@ For example:
 `LICENSE` and `README` files are intended to be replaced by yours: here's why we chose to put the setup guide inside
 the `docker` directory, in order for it to be left untouched and be consulted whenever needed.
 
-This approach creates a strong separation of concerns, which is good in order to keep everything as clean as possible.
+This approach creates a strong separation of concerns, which is good in order to keep everything as clean as possible.  
+
+For more information and a detailed guide of how the underlining Docker configuration works, check out the installation
+and support guide [here](docker/Readme.md)
 
 ## Disclaimer :warning_sign:
 At the moment, the repository has been tested on MacOS, Linux and Windows: everything should be working fine.  
