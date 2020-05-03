@@ -71,7 +71,7 @@ This approach creates a strong separation of concerns, which is good in order to
 For more information and a detailed guide of how the underlining Docker configuration works, check out the installation
 and support guide [here](docker/Readme.md)
 
-## Disclaimer :warning_sign:
+## Disclaimer :warning:
 At the moment, the repository has been tested on MacOS, Linux and Windows: everything should be working fine.  
 For Windows users: be aware this configuration has been tested only in a context where Docker for Windows is 
 installable (i.e. OS installs where Virtualization can be enabled, such as Windows 10 Pro, Education, etc.).    
