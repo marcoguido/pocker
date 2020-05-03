@@ -16,4 +16,8 @@ services:
     ports:
       - "${POSTGRESQL_PORT}:5432"
     volumes:
-      - ../database/postgresql/data:/var/lib/postgresql/data/:rw
+      - postgresql-volume:/var/lib/postgresql/data/:rw
+
+volumes:
+  postgresql-volume:
+    name: ${COMPOSE_PROJECT_NAME}-postgresql-volume

@@ -59,6 +59,3 @@ cdnvm(){
 # Shell aliases
 alias cd='cdnvm'
 alias pa='php artisan'
-
-# Environment variables
-export PATH="$HOME/.composer/vendor/bin:$PATH"
