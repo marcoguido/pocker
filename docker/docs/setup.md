@@ -10,7 +10,7 @@ be fine), as shown below.
     ```bash
     127.0.0.1	example.test
     ```   
-   Add also a bonus entry in your `hosts` file in order to map the `Minio` storage, if you intend to use it:
+   Add also a bonus entry in your `hosts` file in order to map the _Minio_ storage, if you intend to use it:
    ```bash
     127.0.0.1  minio
    ```
@@ -142,25 +142,27 @@ will now be listed below.
     REDIS_PORT=63790
     ```
 
-3. Depending on the web server you want to use, replicate the default _virtualhost_ file either for `nginx` or `apache`,
- respectively inside `docker/http/apache/virtualhosts` or `docker/http/nginx/virtualhosts` folder and update each copy 
- according to your needs.
+3. Depending on the web server you want to use, replicate the default _virtualhost_ file either for _nginx_ or _apache_,
+     respectively inside `docker/http/apache/virtualhosts` or `docker/http/nginx/virtualhosts` folder and update each
+     copy according to your needs.
 
 4. Open a terminal window and head to the root folder of this repository. There, execute the command `make`: all the 
-environment for your project will be crafted (note that this step is required after every update to the `.env` file of
- *step 2*)
+   environment for your project will be crafted (note that this step is required after every update to the `.env` file of
+   *step 2*)
 
-5. Now that the environment is ready, we can start it. The first run could be slow, as `Docker Sync` utility has to 
-synchronize you project source files into a virtual volume: don't worry, is a one-timer operation.
-    
-    To start the environment, run in the same terminal as before the command `make run`. If you want to see the logs of 
-    your containers, you can execute `make run VERBOSE=true` instead of the previous command.  
+5. Now that the environment is ready, we can start it. To start the environment, run in the same terminal as before the 
+    command `make run`. If you want to see the logs of your containers, you can execute `make run VERBOSE=true` instead 
+    of the previous command.
 
-    If you want to opt-out from using `Docker-Sync`, append to the following commands the flag `NO_DOCKER_SYNC=true` 
+    #### Note for MacOS users
+    The first run could be slow, as `Docker Sync` utility has to synchronize you project source files into a virtual 
+    volume: don't worry, is a one-timer operation.  
+
+    If you want to opt-out from using `Docker-Sync`, append to the run command the flag `NO_DOCKER_SYNC=true`. 
 
 6. To test that everything is working fine, open your favourite browser and try entering one of the domains you earlier 
-registered in the *hosts* file at *step 1* of current tasks list.
+    registered in the *hosts* file at *step 1* of current tasks list. If something appears to be broken, try using the
+    `VERBOSE=true` flag, in order to easily track down what the issue could be.
 
 7. If everything succeeded, you should be able to access the `workspace` container console by running in a new terminal 
-window (pointing to the root of this repository) `make tty`. If you decided not to go with `Docker-Sync` remember to add
-the `NO_DOCKER_SYNC=true` flag to the command.
+    window (pointing to the root of this repository) `make tty`.

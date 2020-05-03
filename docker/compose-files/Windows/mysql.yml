@@ -20,4 +20,8 @@ services:
     ports:
       - "${MYSQL_PORT}:3306"
     volumes:
-      - ../database/mysql/data:/var/lib/mysql/:rw
+      - mysql-volume:/var/lib/mysql/:rw
+
+volumes:
+  mysql-volume:
+    name: ${COMPOSE_PROJECT_NAME}-mysql-volume

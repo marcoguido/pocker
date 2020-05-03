@@ -1,0 +1,12 @@
+version: "2"
+
+options:
+  verbose: false
+syncs:
+  ${COMPOSE_PROJECT_NAME}-sync:
+    compose-file-path: ['../workspace.yml', './workspace-override.yml', './${WEBSERVER}.yml', '../Linux/${DBMS}.yml']
+
+    src: '../../../src/'
+    sync_strategy: 'native_osx'
+
+    sync_excludes: ['.git', '.idea', '.vs-code', '.DS_Store', 'Thumbs.db']

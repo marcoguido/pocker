@@ -41,9 +41,9 @@ RUN mkdir -p /usr/share/man/{man1,man7} \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd
 
-###########################
-# PHP Mcrypt installation #
-###########################
+#######################
+# MCRYPT INSTALLATION #
+#######################
 ARG ENABLE_MCRYPT_SUPPORT=false
 RUN if [ ${ENABLE_MCRYPT_SUPPORT} = true ] ; then \
     if [ $(bc -l<<<"${PHP_VERSION:0:3} >= 7.0") == $(bc -l<<<"${PHP_VERSION:0:3} < 7.2") ] ; then \
@@ -66,14 +66,20 @@ RUN if [ ${ENABLE_MCRYPT_SUPPORT} = true ] ; then \
     ;fi \
 ;fi
 
-##################################
-# DBMS dependencies installation #
-##################################
-ARG DBMS=mysql
-RUN if [ ${DBMS} = mysql ]; then \
+######################
+# MYSQL INSTALLATION #
+######################
+ARG ENABLE_MYSQL_SUPPORT=false
+RUN if [ ${ENABLE_MYSQL_SUPPORT} = true ]; then \
     docker-php-ext-install pdo_mysql \
     && docker-php-ext-install mysqli \
-else \
+;fi
+
+######################
+# PGSQL INSTALLATION #
+######################
+ARG ENABLE_POSTGRESQL_SUPPORT=false
+RUN if [ ${ENABLE_POSTGRESQL_SUPPORT} = true ]; then \
     apt-get install -y \
         postgresql-client \
         libpq-dev \
@@ -82,9 +88,9 @@ else \
     && docker-php-ext-install pdo_pgsql \
 ;fi
 
-###########################
-# PHP xDebug installation #
-###########################
+#######################
+# XDEBUG INSTALLATION #
+#######################
 ARG ENABLE_XDEBUG_SUPPORT=false
 ARG XD_REMOTE_HOST=host.docker.internal
 ARG XD_IDEKEY=PHPSTORM
@@ -104,9 +110,9 @@ RUN if [ ${ENABLE_XDEBUG_SUPPORT} = true ]; then \
     && docker-php-ext-enable xdebug \
 ;fi
 
-################################
-# PHP ImageMagick installation #
-################################
+############################
+# IMAGEMAGICK INSTALLATION #
+############################
 ARG ENABLE_IMAGIC_SUPPORT=false
 RUN if [ ${ENABLE_IMAGIC_SUPPORT} = true ]; then \
     apt-get install -y libmagickwand-dev --no-install-recommends \
@@ -115,7 +121,7 @@ RUN if [ ${ENABLE_IMAGIC_SUPPORT} = true ]; then \
 ;fi
 
 ##########################
-# PHP Redis installation #
+# PHP REDIS INSTALLATION #
 ##########################
 ARG ENABLE_PHPREDIS_SUPPORT=false
 RUN if [ ${ENABLE_PHPREDIS_SUPPORT} = true ]; then \
@@ -124,9 +130,9 @@ RUN if [ ${ENABLE_PHPREDIS_SUPPORT} = true ]; then \
     && docker-php-ext-enable redis \
 ;fi
 
-#########################
-# PHP INTL Installation #
-#########################
+#####################
+# INTL INSTALLATION #
+#####################
 ARG ENABLE_INTL_SUPPORT=false
 RUN if [ ${ENABLE_INTL_SUPPORT} = true ]; then \
     apt-get install -y libicu-dev \
@@ -134,9 +140,9 @@ RUN if [ ${ENABLE_INTL_SUPPORT} = true ]; then \
     && docker-php-ext-install intl \
 ;fi
 
-##################################
-# Cleanup APT installation cache #
-##################################
+##############################
+# Cleanup installation cache #
+##############################
 RUN rm -rf /var/lib/apt/lists/* \
     && apt-get clean
 
@@ -171,6 +177,7 @@ ARG ENABLE_NODEJS_SUPPORT=false
 RUN if [ ${ENABLE_NODEJS_SUPPORT} = true ]; then \
     curl -o - https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash \
     && source $HOME/.nvm/nvm.sh \
+    && nvm --version \
     && nvm install stable \
     && nvm install ${PREFERRED_NODE_VERSION} \
 ;fi
@@ -179,18 +186,16 @@ RUN if [ ${ENABLE_NODEJS_SUPPORT} = true ]; then \
 # Handle SSL certificates and SSH keys #
 ########################################
 RUN usermod -u 1000 www-data \
-    && mkdir -p /root/.ssh/host-keys \
+    && mkdir -p /root/.ssh \
     && mkdir -p /etc/ssl/certificates
 
 COPY ssl-certificates /etc/ssl/certificates/
-COPY ssh-keys /root/.ssh/host-keys/
+COPY ssh-keys/ /root/.ssh/
 
-RUN chmod -R 644 /etc/ssl/certificates
-RUN if [find "/root/.ssh/host-keys" -mindepth 1 -print -quit 2>/dev/null | grep -q .]; then \
-    chmod 600 /root/.ssh/host-keys/id_rsa \
-    && chmod 644 /root/.ssh/host-keys/id_rsa.pub \
-    && eval `ssh-agent -s` \
-    && ssh-add /root/.ssh/host-keys/id_rsa \
+RUN chmod -R 644 /etc/ssl/certificates/*
+RUN if [$(ls -1 /root/.ssh/id_rsa* 2>/dev/null | wc -l) != 0]; then \
+    chmod 600 /root/.ssh/id_rsa \
+    && chmod 644 /root/.ssh/id_rsa.pub \
 ;fi
 
 ######################

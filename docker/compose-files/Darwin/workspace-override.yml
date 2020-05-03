@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  php:
+    volumes:
+      - docker-sync:/var/www/html:nocopy
+
+networks:
+  project:
+  database:
+
+volumes:
+  docker-sync:
+    external:
+      name: '${COMPOSE_PROJECT_NAME}-sync'
