@@ -100,20 +100,16 @@ build:
 	@$(COMPOSE_EXECUTABLE) $(COMPOSE_FILES) build php $(WEBSERVER) $(DBMS) minio redis
 
 sync-run:
-	$(info Starting Docker Sync daemon..)
 	@cd $(PLATFORM_COMPOSE_FILES_ROOT) && docker-sync start
 
 sync-stop:
-	$(info Stopping Docker Sync daemon..)
 	@cd $(PLATFORM_COMPOSE_FILES_ROOT) && docker-sync stop
 
 compose-run:
-	$(info Starting application containers..)
 	@cd $(MAIN_COMPOSE_PATH)
 	@$(COMPOSE_EXECUTABLE) $(COMPOSE_FILES) up $(DEMONIZED_COMPOSE) php $(WEBSERVER) $(DBMS) minio redis
 
 compose-stop:
-	$(info Stopping compose containers..)
 	@cd $(MAIN_COMPOSE_PATH) && $(COMPOSE_EXECUTABLE) -f workspace.yml down --remove-orphans
 
 tty:
@@ -131,16 +127,13 @@ containers-list:
 	@docker ps
 
 run-Darwin:
-	$(info Starting application containers with Docker-Sync..)
 	@make -s sync-run
 	@make -s compose-run
 
 run-Linux:
-	$(info Starting application containers..)
 	@make -s compose-run
 
 run-Windows:
-	$(info Starting application containers..)
 	@make -s compose-run
 
 run:
@@ -148,24 +141,30 @@ run:
 	@make -s run-$(PLATFORM)
 
 stop-Darwin:
-	$(info Stopping application containers..)
 	@make -s sync-stop
 	@make -s compose-stop
 
 stop-Linux:
-	$(info Stopping application containers..)
 	@make -s compose-stop
 
 stop-Windows:
-	$(info Stopping application containers..)
 	@make -s compose-stop
 
 stop:
 	$(info Stopping application containers..)
 	@make -s stop-$(PLATFORM)
 
-fresh:
-	$(info Purging Docker Sync volume..)
+fresh-Linux:
+	$(error Task not supported on $($PLATFORM))
+
+fresh-Windows:
+	$(error Task not supported on $($PLATFORM))
+
+fresh-Darwin:
 	@make -s stop
-	@cd docker/compose-files && docker-sync-stack clean
+	@cd $(PLATFORM_COMPOSE_FILES_ROOT) && docker-sync-stack clean
+
+fresh:
+	$(info Purging Docker volumes..)
+	@make -s fresh-$(PLATFORM)
 	$(info All cleaned!)

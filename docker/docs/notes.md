@@ -24,7 +24,7 @@
 
 3. Run `make containers-list` to have an overview of all running containers
 
-4. Run `make fresh` to drop `Docker Sync` volume and re-synchronize it
+4. Run `make fresh` to drop _Docker-Sync_ volume and re-synchronize it (only available on MacOS)
 
 5. Run `make tty` to spawn a bash session from the `workspace` container
 
