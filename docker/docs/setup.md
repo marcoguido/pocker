@@ -64,12 +64,6 @@ will now be listed below.
     #################
     # The PHP version. Every 7.x version is fully supported. 
     PHP_VERSION=7.4
-    
-    # Whether to install MySQL support 
-    ENABLE_MYSQL_SUPPORT=true
-
-    # Whether to install PostgreSQL support 
-    ENABLE_POSTGRESQL_SUPPORT=false
 
     # Whether to install xDebug support, to easily debug PHP scripts 
     ENABLE_XDEBUG_SUPPORT=true
