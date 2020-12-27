@@ -39,7 +39,8 @@ RUN mkdir -p /usr/share/man/{man1,man7} \
     && docker-php-ext-install zip \
     && docker-php-ext-install bz2 \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd
+    && docker-php-ext-install gd \
+    && docker-php-ext-install exif
 
 #######################
 # MCRYPT INSTALLATION #
@@ -51,17 +52,11 @@ RUN if [ ${ENABLE_MCRYPT_SUPPORT} = true ] ; then \
             libonig-dev \
             libmcrypt-dev \
         && docker-php-ext-install mcrypt \
-    ; elif [ $(bc -l<<<"${PHP_VERSION:0:3} >= 7.2") == $(bc -l<<<"${PHP_VERSION:0:3} < 7.4") ] ; then \
+    ; elif [ $(bc -l<<<"${PHP_VERSION:0:3} >= 7.2") == $(bc -l<<<"${PHP_VERSION:0:3} < 8.0") ] ; then \
         apt-get install -yqq \
             libonig-dev \
             libmcrypt-dev \
-        && pecl install mcrypt-1.0.2 \
-        && docker-php-ext-enable mcrypt \
-    ; else \
-        apt-get install -yqq \
-            libonig-dev \
-            libmcrypt-dev \
-        && pecl install mcrypt-1.0.3 \
+        && pecl install mcrypt-1.0.4 \
         && docker-php-ext-enable mcrypt \
     ;fi \
 ;fi
@@ -95,17 +90,30 @@ ARG XD_REMOTE_HOST=host.docker.internal
 ARG XD_IDEKEY=PHPSTORM
 ARG XD_REMOTE_PORT
 RUN if [ ${ENABLE_XDEBUG_SUPPORT} = true ]; then \
-    if [ $(bc -l<<<"${PHP_VERSION:0:3} < 7.1") ] ; then \
-        pecl install xdebug-2.8.0 \
+    if [ $(bc -l<<<"${PHP_VERSION:0:3} < 7.1") -eq 1 ] ; then \
+        printf 'Installing xdebug 2.8.0 \n' \
+        && pecl install xdebug-2.8.0 \
+        && echo "xdebug.remote_enable=1" >> /usr/local/etc/php/conf.d/xdebug.ini \
+        && echo "xdebug.remote_autostart=1" >> /usr/local/etc/php/conf.d/xdebug.ini \
+        && echo "xdebug.remote_host=$XD_REMOTE_HOST" >> /usr/local/etc/php/conf.d/xdebug.ini \
+        && echo "xdebug.remote_port=$XD_REMOTE_PORT" >> /usr/local/etc/php/conf.d/xdebug.ini \
+    ; elif [ $(bc -l<<<"${PHP_VERSION:0:3} < 7.2") -eq 1 ] ; then \
+        printf 'Installing xdebug 2.9.8 \n' \
+        && pecl install xdebug-2.9.8 \
+        && echo "xdebug.remote_enable=1" >> /usr/local/etc/php/conf.d/xdebug.ini \
+        && echo "xdebug.remote_autostart=1" >> /usr/local/etc/php/conf.d/xdebug.ini \
+        && echo "xdebug.remote_host=$XD_REMOTE_HOST" >> /usr/local/etc/php/conf.d/xdebug.ini \
+        && echo "xdebug.remote_port=$XD_REMOTE_PORT" >> /usr/local/etc/php/conf.d/xdebug.ini \
     ; else \
-        pecl install xdebug \
+        printf 'Installing latest xdebug \n' \
+        && pecl install xdebug \
+        && echo "xdebug.mode=debug" >> /usr/local/etc/php/conf.d/xdebug.ini \
+        && echo "xdebug.start_with_request=yes" >> /usr/local/etc/php/conf.d/xdebug.ini \
+        && echo "xdebug.client_host=$XD_REMOTE_HOST" >> /usr/local/etc/php/conf.d/xdebug.ini \
+        && echo "xdebug.client_port=$XD_REMOTE_PORT" >> /usr/local/etc/php/conf.d/xdebug.ini \
     ;fi \
     && touch /usr/local/etc/php/conf.d/xdebug.ini \
-    && echo "xdebug.remote_enable=1" >> /usr/local/etc/php/conf.d/xdebug.ini \
-    && echo "xdebug.remote_autostart=1" >> /usr/local/etc/php/conf.d/xdebug.ini \
-    && echo "xdebug.remote_host=$XD_REMOTE_HOST" >> /usr/local/etc/php/conf.d/xdebug.ini \
     && echo "xdebug.idekey=$XD_IDEKEY" >> /usr/local/etc/php/conf.d/xdebug.ini \
-    && echo "xdebug.remote_port=$XD_REMOTE_PORT" >> /usr/local/etc/php/conf.d/xdebug.ini \
     && docker-php-ext-enable xdebug \
 ;fi
 
