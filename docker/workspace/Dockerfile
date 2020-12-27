@@ -39,7 +39,8 @@ RUN mkdir -p /usr/share/man/{man1,man7} \
     && docker-php-ext-install zip \
     && docker-php-ext-install bz2 \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd
+    && docker-php-ext-install gd \
+    && docker-php-ext-install exif
 
 #######################
 # MCRYPT INSTALLATION #
