@@ -52,17 +52,11 @@ RUN if [ ${ENABLE_MCRYPT_SUPPORT} = true ] ; then \
             libonig-dev \
             libmcrypt-dev \
         && docker-php-ext-install mcrypt \
-    ; elif [ $(bc -l<<<"${PHP_VERSION:0:3} >= 7.2") == $(bc -l<<<"${PHP_VERSION:0:3} < 7.4") ] ; then \
+    ; elif [ $(bc -l<<<"${PHP_VERSION:0:3} >= 7.2") == $(bc -l<<<"${PHP_VERSION:0:3} < 8.0") ] ; then \
         apt-get install -yqq \
             libonig-dev \
             libmcrypt-dev \
-        && pecl install mcrypt-1.0.2 \
-        && docker-php-ext-enable mcrypt \
-    ; else \
-        apt-get install -yqq \
-            libonig-dev \
-            libmcrypt-dev \
-        && pecl install mcrypt-1.0.3 \
+        && pecl install mcrypt-1.0.4 \
         && docker-php-ext-enable mcrypt \
     ;fi \
 ;fi
