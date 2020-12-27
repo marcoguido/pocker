@@ -199,7 +199,11 @@ RUN usermod -u 1000 www-data \
 COPY ssl-certificates /etc/ssl/certificates/
 COPY ssh-keys/ /root/.ssh/
 
-RUN chmod -R 644 /etc/ssl/certificates/*
+
+RUN if [ $(ls -1 /etc/ssl/certificates/*.crt 2>/dev/null | wc -l) != 0 ]; then \
+    chmod -R 644 /etc/ssl/certificates/* \
+;fi
+
 RUN if [ $(ls -1 /root/.ssh/id_rsa* 2>/dev/null | wc -l) != 0 ]; then \
     chmod 600 /root/.ssh/id_rsa \
     && chmod 644 /root/.ssh/id_rsa.pub \
