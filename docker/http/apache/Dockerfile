@@ -18,10 +18,10 @@ COPY conf/virtualhosts.conf /usr/local/apache2/conf/extra/
 # Make sure to load every virtual host file
 ARG ENABLE_SSL=false
 RUN echo "Include /usr/local/apache2/conf/config-override.conf" >> /usr/local/apache2/conf/httpd.conf \
-    && mkdir -p /usr/local/apache2/conf/virtualhosts \
-    if [ ${ENABLE_SSL} = true ] ; then \
-        echo "Include /usr/local/apache2/conf/extra/ssl.conf" >> /usr/local/apache2/conf/httpd.conf \
-    ;fi
+    && mkdir -p /usr/local/apache2/conf/virtualhosts
+RUN if [ ${ENABLE_SSL} = true ] ; then \
+    echo "Include /usr/local/apache2/conf/extra/ssl.conf" >> /usr/local/apache2/conf/httpd.conf \
+;fi
 
 # Define some user details and create a logging directory
 RUN usermod -u 1000 www-data \
